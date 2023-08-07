@@ -78,6 +78,17 @@ button{
     border-top: 1px solid rgba(255,255,255,.3);
 }
 
+select{
+    width: 80%;
+    margin: 5% auto;
+    margin-bottom: 5%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    opacity: .8;
+}
 p{
     font-size: 12px;
     text-align: center;
