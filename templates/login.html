@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="login_script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="center">
-    <h2>Login</h2>
-</div>
+        <h2>Login</h2>
+    </div>
+    
     <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="loginUsername" placeholder="Username" required><br>
@@ -21,14 +21,10 @@
     <select id="userType" name="userType">
         <option value="retailer">Retailer</option>
         <option value="wholesaler">Wholesaler</option>
-    </select><br>
+    </select>
         <button type="button" onclick="login()">Login</button>
     </form>
 
     <div id="message"></div>
-
-   
-    
 </body>
 </html>
-
