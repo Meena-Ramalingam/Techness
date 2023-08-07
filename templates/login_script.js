@@ -19,7 +19,7 @@ function login() {
                 // window.location.href = 'dashboard.html';
                 if (userType === 'retailer') {
                     // Redirect to retailer dashboard after successful login
-                    window.location.href = 'retailer_dashboard.html';
+                    window.location.href = 'dashboard.html';
                 } else if (userType === 'wholesaler') {
                     // Redirect to wholesaler dashboard after successful login
                     window.location.href = 'wholesaler_dashboard.html';
