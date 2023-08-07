@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Techness Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
+
+        <button type="button" onclick="loginWithEmail()">Login</button>
+        <button type="button" onclick="loginWithGoogle()">Sign in with Google</button>
+    </form>
+    <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
