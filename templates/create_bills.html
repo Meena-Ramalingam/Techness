@@ -71,12 +71,38 @@
         }
         
         function generateInvoice() {
-            // Here, you can handle the process of generating the invoice and saving it in the database.
-            // You can use AJAX or a server-side script to send the cartItems data to the backend for further processing.
-            window.location.href = 'bill_summary.html';
+            const invoiceData = {
+        cartItems: cartItems,
+        subtotal: parseFloat(document.getElementById('subtotal').textContent),
+        discount: parseFloat(document.getElementById('discountAmount').textContent),
+        total: parseFloat(document.getElementById('total').textContent)
+    };
+
+    // Send the cartItems data to the server using AJAX (fetch API)
+    fetch('save_invoice.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(invoiceData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Invoice saved successfully!', data);
+        // Redirect to the bill summary page
+        
+    })
+    .catch(error => {
+        console.error('Error saving the invoice:', error);
+        // Handle error scenario
+    });
+    window.location.href = 'bill_summary.html';
         }
         </script>
 </head>
+
+
+
 <style>
     /* ... Your existing CSS styles ... */
 
@@ -184,3 +210,4 @@ button {
 
 </body>
 </html>
+
