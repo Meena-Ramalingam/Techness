@@ -1,11 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Retailer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 25px;
+}
+
+.nav-bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-bar li {
+    float: right; /* Right-align the list items */
+    margin-left: 20px; /* Add a left margin to separate the items */
+}
+
+.nav-bar li:first-child {
+    margin-left: 0; /* Remove the left margin from the first item */
+}
+
+.nav-bar li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+.nav-bar li a:hover {
+    background-color: #555;
+}
+
+.user-session {
+    float: right;
+}
+
+.main-area {
+    padding: 20px;
+}
+
+
+</style>
 <body>
-    <p>welcome</p>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul class="nav-bar">
+            <!-- User Session Details -->
+            <li class="user-session">Welcome, John Doe!</li>
+            <!-- Options to Redirect -->
+            <li><a href="sales_predictions.html">Sales Predictions</a></li>
+            <li><a href="inventory.html">Inventory</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-area">
+        <!-- Content for the sales predictions page or inventory page will be added here dynamically -->
+    </div>
+
+    <!-- You can add your JavaScript code here if needed -->
 </body>
 </html>
