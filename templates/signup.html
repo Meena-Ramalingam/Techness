@@ -8,10 +8,8 @@
     <script src="signup_script.js"></script>
 </head>
 <body>
-    <div class="center">
-    <h2>Sign Up</h2>
-</div>
-    <form id="signupForm">
+    <form>
+        <h1>Sign Up</h1>
         <label for="username">Username:</label>
         <input type="text" id="username" required><br>
 
@@ -28,16 +26,12 @@
         <option value="wholesaler">Wholesaler</option>
         </select>
 
-
+        
         <button type="button" onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="login.html">Login</a></p>
     </form>
 
     <div id="message"></div>
-
-    <!-- Add a link/button to go to the login page -->
-    <div class="center">
-    <p>Already have an account? <a href="login.html">Login</a></p>
-</div>
 </body>
 </html>
 
