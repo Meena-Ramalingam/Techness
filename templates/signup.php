@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ALL); ini_set('display_errors', 1);
 require_once('db_connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -13,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = mysqli_real_escape_string($conn, $email);
     $password = mysqli_real_escape_string($conn, $password);
     $userType = mysqli_real_escape_string($conn, $userType);
+
     // Check if the username or email already exists in the database
     $query = "SELECT * FROM users WHERE username = '$username' OR email = '$email'";
     $result = $conn->query($query);
