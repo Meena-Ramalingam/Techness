@@ -2,7 +2,7 @@ function signup() {
     const username = document.getElementById('signupUsername').value;
     const email = document.getElementById('signupEmail').value;
     const password = document.getElementById('signupPassword').value;
-
+    const userType = document.getElementById('userType').value;
     $.ajax({
         url: 'signup.php',
         type: 'POST',
@@ -10,7 +10,8 @@ function signup() {
         data: {
             username: username,
             email: email,
-            password: password
+            password: password,
+            userType: userType
         },
         success: function (response) {
             $('#message').text(response.message);
