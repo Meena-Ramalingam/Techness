@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="login_script.js"></script>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="loginUsername" placeholder="Username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="loginPassword" placeholder="Password" required><br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+
+    <div id="message"></div>
+</body>
+</html>

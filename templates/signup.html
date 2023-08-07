@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Techness Sign Up</title>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="signup_script.js"></script>
 </head>
 <body>
-    <h1>Sign Up</h1>
+    <h2>Sign Up</h2>
     <form id="signupForm">
         <label for="username">Username:</label>
-        <input type="text" id="username" required><br>
-
+        <input type="text" id="signupUsername" placeholder="Username" required><br>
         <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
-
+        <input type="email" id="signupEmail" placeholder="Email" required><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" required><br>
-
+        <input type="password" id="signupPassword" placeholder="Password" required><br>
         <button type="button" onclick="signup()">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="index.html">Login here</a></p>
 
-    <script src="script.js"></script>
+    <div id="message"></div>
+
+    <!-- Add a link/button to go to the login page -->
+    <p>Already have an account? <a href="login.html">Login</a></p>
 </body>
 </html>
-
