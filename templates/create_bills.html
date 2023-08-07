@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Billing System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script >let cartItems = [];
+
+        function addToCart() {
+            const product = document.getElementById('product').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+        
+            // Get the price for the selected product (You may fetch this from the database or predefined values)
+            const price = getProductPrice(product);
+        
+            // Calculate total for this product
+            const total = price * quantity;
+        
+            // Add the item to the cartItems array
+            cartItems.push({ product, quantity, price, total });
+        
+            // Update the cart table
+            updateCartTable();
+        
+            // Clear quantity input
+            document.getElementById('quantity').value = 1;
+        }
+        
+        function getProductPrice(product) {
+            // Replace this with actual product prices
+            const productPrices = {
+                product1: 10.99,
+                product2: 5.99,
+                // Add more product prices here
+            };
+        
+            return productPrices[product] || 0;
+        }
+        
+        function updateCartTable() {
+            const cartTable = document.getElementById('cart');
+            cartTable.innerHTML = '<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th><th>Action</th></tr>';
+        
+            cartItems.forEach(item => {
+                const row = cartTable.insertRow(-1);
+                row.innerHTML = `<td>${item.product}</td><td>${item.quantity}</td><td>${item.price.toFixed(2)}</td><td>${item.total.toFixed(2)}</td><td><button onclick="removeFromCart(${cartItems.indexOf(item)})">Remove</button></td>`;
+            });
+        }
+        
+        function removeFromCart(index) {
+            cartItems.splice(index, 1);
+            updateCartTable();
+        }
+        
+        function calculateTotal() {
+            const discount = parseInt(document.getElementById('discount').value);
+        
+            // Calculate subtotal
+            const subtotal = cartItems.reduce((acc, item) => acc + item.total, 0);
+        
+            // Calculate discount amount
+            const discountAmount = (subtotal * discount) / 100;
+        
+            // Calculate total after discount
+            const total = subtotal - discountAmount;
+        
+            // Update the total values in the UI
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('discountAmount').textContent = discountAmount.toFixed(2);
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+        
+        function generateInvoice() {
+            // Here, you can handle the process of generating the invoice and saving it in the database.
+            // You can use AJAX or a server-side script to send the cartItems data to the backend for further processing.
+            window.location.href = 'bill_summary.html';
+        }
+        </script>
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+div {
+    margin: 10px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+}
+
+#discount, #quantity {
+    width: 50px;
+}
+
+</style>
+<body>
+    <h2>Billing System</h2>
+    <div>
+        <label for="product">Select Product:</label>
+        <select id="product">
+            <option value="product1">Product 1</option>
+            <option value="product2">Product 2</option>
+            <!-- Add more product options here -->
+        </select>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" value="1" min="1">
+
+        <button onclick="addToCart()">Add to Cart</button>
+    </div>
+
+    <table id="cart">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </table>
+
+    <div>
+        <label for="discount">Discount (%):</label>
+        <input type="number" id="discount" value="0" min="0" max="100">
+
+        <button onclick="calculateTotal()">Calculate Total</button>
+    </div>
+
+    <div>
+        <p>Subtotal: <span id="subtotal">0.00</span></p>
+        <p>Discount: <span id="discountAmount">0.00</span></p>
+        <p>Total: <span id="total">0.00</span></p>
+    </div>
+
+    <!-- ... Your existing HTML content ... -->
+<button onclick="generateInvoice()">Generate Invoice</button>
+
+</body>
+</html>
