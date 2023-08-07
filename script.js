@@ -23,4 +23,27 @@ let database = {
       window.location.href = 'index.html';
     }
   }
+  // Function to log in an existing user
+function loginWithEmail() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+  
+    // Check if user exists in the "database"
+    const user = database.users.find(u => u.email === email && u.password === password);
+  
+    if (user) {
+      alert('Login successful! Redirecting...');
+  
+      // Redirect to the appropriate page based on user type
+      if (user.userType === 'retailer') {
+        window.location.href = 'retailer_dashboard.html'; // Redirect to the retailer dashboard
+      } else if (user.userType === 'wholesaler') {
+        window.location.href = 'wholesaler_dashboard.html'; // Redirect to the wholesaler dashboard
+      } else {
+        alert('Invalid user type.'); // Handle the case where user type is neither retailer nor wholesaler
+      }
+    } else {
+      alert('Invalid credentials. Please try again or sign up.');
+    }
+  }
   
