@@ -6,27 +6,68 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="signup_script.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <form>
-        <h1>Sign Up</h1>
-        <label for="username">Username:</label>
-        <input type="text" id="signupUsername" placeholder="Username" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="signupEmail" placeholder="Email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="signupPassword" placeholder="Password" required><br>
-        <label for="userType">Choose user type:</label>
-        <select id="userType" name="userType">
-            <option value="retailer">Retailer</option>
-            <option value="wholesaler">Wholesaler</option>
-        </select>
-
-        
-        <button type="button" onclick="signup()">Sign Up</button>
-        <p>Already have an account? <a href="login.html">Login</a></p>
-    </form>
-
-    <div id="message"></div>
+    <img class="wave" src="img/wave.png">
+	<div class="container">
+		<div class="img">
+			<img src="img/bg.svg">
+		</div>
+		<div class="login-content">
+			<form action="index.html">
+				<img src="img/avatar.svg">
+				<h2 class="title">Welcome</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<h5>Username</h5>
+           		   		<input type="text" class="input">
+           		   </div>
+           		</div>
+				   <div class="input-div one">
+					<div class="i">
+							<i class="fas fa-user"></i>
+					</div>
+					<div class="div">
+							<h5>Email</h5>
+							<input type="text" class="input">
+					</div>
+				 </div>
+           		<div class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fas fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5>Password</h5>
+           		    	<input type="password" class="input">
+            	   </div>
+            	</div>
+				<div class="input-div pass">
+					<div class="i"> 
+						 <i class="fas fa-lock"></i>
+					</div>
+					<div class="div">
+						 
+						<label for="userType">Choose user type:</label>
+						<select id="userType" name="userType">
+							<option value="retailer">Retailer</option>
+							<option value="wholesaler">Wholesaler</option>
+						</select>
+						
+				 </div>
+			  </div>
+				
+            	<a href="#">Forgot Password?</a>
+            	<input type="submit" class="btn" value="Login">
+				<p>Already have an account? <a href="login.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
