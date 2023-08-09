@@ -97,6 +97,32 @@ form{
 	transition: .3s;
 }
 
+.input-div > div > label{
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #999;
+	font-size: 18px;
+	transition: .3s;
+}
+
+select {
+	width: 100%;
+	padding: 8px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
+	color: #333; /* Adjust color as needed */
+	
+  }
+  
+  select option:checked {
+	background-color: #007bff; /* Adjust color as needed */
+	color: #fff; /* Adjust color as needed */
+  }
+
 .input-div:before, .input-div:after{
 	content: '';
 	position: absolute;
@@ -147,18 +173,7 @@ form{
 	margin-bottom: 4px;
 }
 
-a{
-	display: block;
-	text-align: right;
-	text-decoration: none;
-	color: #999;
-	font-size: 0.9rem;
-	transition: .3s;
-}
 
-a:hover{
-	color: #38d39f;
-}
 
 .btn{
 	display: block;
