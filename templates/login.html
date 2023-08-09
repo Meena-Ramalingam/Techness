@@ -1,28 +1,60 @@
-<link rel="manifest" href="manifest.json"><!DOCTYPE html>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Sign Up</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="login_script.js"></script>
+    <script src="signup_script.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <form id="loginForm">
-        <h1>LOGIN</h1>
-        <label for="username">Username:</label>
-        <input type="text" id="username" required><br>
+    <img class="wave" src="img/wave.png">
+	<div class="container">
+		<div class="img">
+			<img src="img/bg.svg">
+		</div>
+		<div class="login-content">
+			<form action="index.html">
+				<img src="img/avatar.svg">
+				<h2 class="title">Welcome</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<h5>Username</h5>
+           		   		<input type="text" class="input">
+           		   </div>
+           		</div>
+				   <div class="input-div one">
+					<div class="i">
+							<i class="fas fa-user"></i>
+					</div>
+					<div class="div">
+							<h5>Email</h5>
+							<input type="text" class="input">
+					</div>
+				 </div>
+           		<div class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fas fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5>Password</h5>
+           		    	<input type="password" class="input">
+            	   </div>
+            	</div>
+			  
+			  
+						<button type="button" class="btn" onclick="loginWithEmail()">Login</button>
+                        <button type="button" class="btn" onclick="loginWithGoogle()">Sign in with Google</button>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br>
-
-        <button type="button" onclick="loginWithEmail()">Login</button>
-        <button type="button" onclick="loginWithGoogle()">Sign in with Google</button>
-    </form>
-    <div id="message"></div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
