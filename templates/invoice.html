@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+        button[type="submit"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Invoice</h1>
+    <table border="1">
+        <tr>
+            <th>Product Code</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[1] }}</td>
+            <td>{{ order[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Total Amount: {{ total_amount }}</p>
+    <p>GST (18%): {{ gst_amount }}</p>
+    <p>Discount: {{ discount_amount }}</p>
+    <p>Final Amount: {{ final_amount }}</p>
+</body>
+</html>
