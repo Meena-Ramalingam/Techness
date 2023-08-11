@@ -3,12 +3,12 @@
     padding: 0;
     box-sizing: border-box;
     cursor: pointer;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 body {
     width: 100%;
     min-height: 100vh;
-    background: black;
+    background: white;
 }
 
 .wave{
@@ -36,15 +36,33 @@ nav li{
     display: flex;
 }
 
-.content{
+.container{
     width: 50%;
     margin-top: 10%;
     margin-left: 5%;
-    color: white;
+    color: black; 
 }
 
-.content p{
+.container p{
     font-size: 20px;
     margin-bottom: 5%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Poppins', sans-serif;
+}
+
+.create-bills-button{
+    padding: 15px 30px;
+    background: #38d39f;
+    color: white;
+    font-size: 17px;
+    border-radius: 10px;
+
+}
+
+.btn{
+    color: white;
+    font-size: 20px;
+}
+
+.image{
+    margin: 50px 25px;
 }
