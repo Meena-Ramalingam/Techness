@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <title>Sign Up</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="signup_script.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="js/signup_script.js"></script>
+    <link rel="stylesheet" href="static/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <img class="wave" src="img/wave.png">
+    <img class="wave" src="static\images\wave.png">
 	<div class="container">
 		<div class="img">
-			<img src="img/bg.svg">
+			<img src="static\images\bg.svg">
 		</div>
 		<div class="login-content">
 			<form action="index.html">
-				<img src="img/avatar.svg">
+				<img src="static\images\avatar.svg">
 				<h2 class="title">Welcome</h2>
            		<div class="input-div one">
            		   <div class="i">
@@ -49,12 +49,13 @@
             	</div>
 			  
 			  
-						<button type="button" class="btn" onclick="loginWithEmail()">Login</button>
+						<button type="button" class="btn" onclick="login()">Login</button>
                         <button type="button" class="btn" onclick="loginWithGoogle()">Sign in with Google</button>
+						<p>New user? Sign up<a href="templates\signup.html"> Sign Up</a></p>
 
             </form>
         </div>
     </div>
-    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="static\js\login_script.js"></script>
 </body>
 </html>
