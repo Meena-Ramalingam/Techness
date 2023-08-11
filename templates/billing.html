@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing System</title>
+    <style>
+         
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+        button[type="submit"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="/">Home</a></li>
+            <li><a href="templates\product_list.html">Product List</a></li>
+        </ul>
+    </nav>
+
+    <h1>Billing System</h1>
+    <form action="/create_bill" method="post">
+        <label for="product_code">Product Code:</label>
+        <select name="product_code" id="product_code">
+            {% for product in products %}
+            <option value="{{ product[0] }}">{{ product[0] }}</option>
+            {% endfor %}
+        </select>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" min="1" required>
+        <button type="submit">Add to Bill</button>
+    </form>
+    <a href="/product_list" class="product-details-link">View Product Details</a>
+</body>
+
+
+</html>
