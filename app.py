@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 import smtplib
 from email.mime.text import MIMEText
 from twilio.rest import Client
@@ -20,32 +20,6 @@ orders = []
 @app.route('/')
 def home():
     return render_template('login.html')
-
-@app.route('/login', methods=['POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        # Establish a connection to the SQLite database
-        conn = sqlite3.connect('users.db')
-        cursor = conn.cursor()
-
-        # Check if the provided username, password, and user type match in the database
-        cursor.execute('SELECT * FROM users WHERE username = ? AND password = ? AND user_type = ?', (username, password, user_type))
-        user = cursor.fetchone()
-        conn.close()
-
-        if user:
-            session['username'] = username
-            session['user_type'] = user[2]  # Assuming user_type is at index 2 in the user tuple
-            return redirect(url_for('billing'))
-        else:
-            return render_template('login.html', message='Invalid credentials. Please try again.')
-
-    return render_template('login.html')
-
-    
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -80,6 +54,33 @@ def signup():
             return jsonify({"success": False, "message": "Sign up failed. An error occurred."})
 
     return render_template('signup.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Establish a connection to the SQLite database
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+
+        # Check if the provided username, password, and user type match in the database
+        cursor.execute('SELECT * FROM users WHERE username = ? AND password = ? AND user_type = ?', (username, password, user_type))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            session['username'] = username
+            session['user_type'] = user[2]  # Assuming user_type is at index 2 in the user tuple
+            return redirect(url_for('billing'))
+        else:
+            return render_template('login.html', message='Invalid credentials. Please try again.')
+
+    return render_template('login.html')
+
+    
+
 
 
 @app.route('/dashboard')
@@ -171,6 +172,10 @@ def send_sms_order(phone_number, product_code, order_count):
     )
     
     
+# @app.route('/logout')
+# def logout():
+#     session.clear()
+#     return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
