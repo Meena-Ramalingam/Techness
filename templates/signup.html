@@ -3,30 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+	<link rel="icon" href="/static/images/logo.png" type="image/png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="static\js\signup_script.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <img class="wave" src="static\images\wave.png">
+
+
+
+<script>
+    function signUp() {
+        // Get form input values
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var userType = document.getElementById("userType").value;
+
+        // Construct data object for AJAX request
+        var data = {
+            username: username,
+            email: email,
+            password: password,
+            userType: userType
+        };
+
+        // Send AJAX request to Flask app
+        $.ajax({
+            type: "POST",
+            url: "/signup", // Change this to the appropriate route in app.py
+            data: data,
+            success: function(response) {
+                // Process the response from the server
+                if (response.success) {
+                    alert("Sign up successful!");
+					window.location.href = "/login";
+                    // Redirect to a new page or perform other actions
+                } else {
+                    alert("Sign up failed: " + response.message);
+                }
+            }
+        });
+    }
+</script>
+
+
+
+    <img class="wave" src="/static/images/wave.png">
 	<div class="container">
 		<div class="img">
-			<img src="static\images\bg.svg">
+			<img src="/static/images/bg.svg">
 		</div>
 		<div class="login-content">
 			<form action="login.html">
-				<img src="static\images\avatar.svg">
+				<img src="/static/images/avatar.svg">
 				<h2 class="title">Welcome</h2>
            		<div class="input-div one">
            		   <div class="i">
            		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
-           		   		<h5>Username</h5>
-           		   		<input type="text" class="input">
+           		   		<input type="text" class="input" id="username" placeholder="Username">
            		   </div>
            		</div>
 				   <div class="input-div one">
@@ -34,8 +73,7 @@
 							<i class="fas fa-user"></i>
 					</div>
 					<div class="div">
-							<h5>Email</h5>
-							<input type="text" class="input">
+							<input type="text" class="input" id="email" placeholder="Email ID">
 					</div>
 				 </div>
            		<div class="input-div pass">
@@ -43,8 +81,7 @@
            		    	<i class="fas fa-lock"></i>
            		   </div>
            		   <div class="div">
-           		    	<h5>Password</h5>
-           		    	<input type="password" class="input">
+           		    	<input type="password" class="input" id="password" placeholder="Password">
             	   </div>
             	</div>
 				<div class="input-div one">
@@ -65,13 +102,12 @@
 				 </div>
 			  
 			  
-						<button type="button" class="btn" onclick="loginWithEmail()">Login</button>
+						<button type="button" class="btn" onclick="signUp()">Sign up</button>
 				
 				
-				<p>Already have an account?<a href="login.html">Login</a></p>
+				<p>Already have an account? <a href="{{ url_for('login_page') }}">Login</a></p>
             </form>
         </div>
     </div>
-    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
