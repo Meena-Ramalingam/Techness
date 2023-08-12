@@ -17,11 +17,14 @@
             border-collapse: collapse;
             width: 80%;
             margin: 20px auto;
+            border-spacing: 0; /* Improved cell spacing */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
+            background-color: #fff;
         }
         th {
             background-color: #f2f2f2;
@@ -40,13 +43,35 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
         }
         button[type="submit"]:hover {
             background-color: #0056b3;
+            color: #fff;
         }
+        @media (max-width: 768px) {
+           table {
+           width: 100%;
+        }
+        th, td {
+        padding: 6px; /* Reduce padding for smaller screens */
+        }
+        }
+        p {
+        text-align: center;
+        margin-bottom: 10px;
+        }
+        .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
     </style>
 </head>
 <body>
+    <div class="container">
     <h1>Invoice</h1>
     <table border="1">
         <tr>
@@ -66,5 +91,6 @@
     <p>GST (18%): {{ gst_amount }}</p>
     <p>Discount: {{ discount_amount }}</p>
     <p>Final Amount: {{ final_amount }}</p>
+</div>
 </body>
 </html>
