@@ -1,76 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Billing System</title>
-    <style>
-         
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-            padding: 20px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-            text-align: center;
-        }
-        button[type="submit"] {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
-    
+    <title>Billing Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body>
-    <nav>
-        <ul class="navbar">
-            <li><a href="/">Home</a></li>
-            <li><a href="templates\product_list.html">Product List</a></li>
-        </ul>
-    </nav>
-
-    <h1>Billing System</h1>
-    <form action="/create_bill" method="post">
-        <label for="product_code">Product Code:</label>
-        <select name="product_code" id="product_code">
-            {% for product in products %}
-            <option value="{{ product[0] }}">{{ product[0] }}</option>
-            {% endfor %}
-        </select>
-        <label for="quantity">Quantity:</label>
-        <input type="number" name="quantity" min="1" required>
-        <button type="submit">Add to Bill</button>
+    <h1>Billing Page</h1>
+    
+    <table id="billingTable">
+        <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- This row will be cloned for each new product -->
+            <tr class="product-row">
+                <td><input type="text" class="product-code-input"></td>
+                <td class="product-name"></td>
+                <td class="price"></td>
+                <td><input type="number" class="quantity-input" min="1" value="1"></td>
+                <td class="total"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button id="addProduct">Add Product</button>
+    
+    <p>GST: <span id="gst">0</span>%</p>
+    <p>Total Amount: <span id="total-amount">0</span></p>
+    
+    <form id="billingForm" method="post" action="/submit_bill">
+        <input type="hidden" name="product_code">
+        <input type="hidden" name="quantity">
+        <button id="submitBill" type="submit">Submit Bill</button>
     </form>
-    <a href="/product_list" class="product-details-link">View Product Details</a>
+    
+    
+    <script>
+        $(document).ready(function() {
+            $('#addProduct').on('click', function() {
+                var newRow = $('.product-row').first().clone();
+                newRow.find('input').val('');
+                newRow.find('.product-name, .price, .total').text('');
+                $('#billingTable tbody').append(newRow);
+            });
+    
+            $('#billingTable').on('input', '.product-code-input', function() {
+                var productCode = $(this).val();
+                var row = $(this).closest('tr');
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_product_data',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'product_code': productCode}),
+                    success: function(response) {
+                        row.find('.product-name').text(response.product_name);
+                        row.find('.price').text(response.price);
+                        calculateRowTotal(row);
+                        updateFinalAmount();
+                    }
+                });
+            });
+    
+            $('#billingTable').on('input', '.quantity-input', function() {
+                var row = $(this).closest('tr');
+                calculateRowTotal(row);
+                updateFinalAmount();
+            });
+    
+            $('#submitBill').on('click', function() {
+    var productData = [];
+    $('.product-row').each(function() {
+        var productCode = $(this).find('.product-code-input').val();
+        var quantity = parseInt($(this).find('.quantity-input').val());
+        productData.push({ 'product_code': productCode, 'quantity': quantity });
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/submit_bill',
+        contentType: 'application/json',  // Set the content type to JSON
+        data: JSON.stringify({ 'product_data': productData }),  // Convert data to JSON format
+        success: function(response) {
+            // Redirect to the "Thank You" page
+            window.location.href = '/thank_you';
+        }
+    });
+});
+
+    
+            function calculateRowTotal(row) {
+                var price = parseFloat(row.find('.price').text());
+                var quantity = parseInt(row.find('.quantity-input').val());
+                var total = (isNaN(price) || isNaN(quantity)) ? 0 : (price * quantity);
+                row.find('.total').text(total.toFixed(2));
+            }
+    
+            function updateFinalAmount() {
+                var totalAmount = 0;
+                $('.total').each(function() {
+                    totalAmount += parseFloat($(this).text());
+                });
+    
+                var gstPercent = 18; // Example GST rate
+                var gstAmount = (gstPercent / 100) * totalAmount;
+                var finalAmount = totalAmount + gstAmount;
+    
+                $('#gst').text(gstPercent);
+                $('#total-amount').text(finalAmount.toFixed(2));
+            }
+        });
+    </script>
+    
 </body>
-
-
 </html>

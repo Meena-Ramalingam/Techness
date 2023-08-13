@@ -3,19 +3,12 @@ import smtplib
 from email.mime.text import MIMEText
 from twilio.rest import Client
 import sqlite3
+import json
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Sample product list (product code, product name, present count, minimum count, dealer, contact, order count, price)
-products = [
-    ("P001", "Product 1", 50, 20, "Dealer 1", "email", "dealer1@example.com", 100, 10.00),
-    ("P002", "Product 2", 30, 10, "Dealer 2", "sms", "1234567890", 50, 20.00),
-    # Add more products here
-]
 
-# Sample orders list (product code, quantity)
-orders = []
 
 @app.route('/')
 def home():
@@ -99,95 +92,59 @@ def login_page():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/product_list')
-def product_list():
-    return render_template('product_list.html', products=products)
-
-@app.route('/create_bill', methods=['POST'])
-def create_bill():
-    total_amount = 0.0
-    bill_items = []
-
-    for product in products:
-        code = product[0]
-        name = product[1]
-        quantity = int(request.form.get(f'{code}_quantity', 0))
-        if quantity > 0:
-            price = product[8]
-            amount = price * quantity
-            total_amount += amount
-            bill_items.append((code, name, quantity, amount))
-            update_present_count(code, quantity)
-
-    gst_rate = 0.18  # GST rate of 18%
-    discount = 10    # Discount in percentage
-
-    gst_amount = total_amount * gst_rate
-    discount_amount = total_amount * (discount / 100)
-    final_amount = total_amount + gst_amount - discount_amount
-
-    return render_template('invoice.html', bill_items=bill_items, total_amount=total_amount, gst_amount=gst_amount, discount_amount=discount_amount, final_amount=final_amount)
 
 
-def update_present_count(product_code, quantity):
-    for product in products:
-        if product[0] == product_code:
-            present_count = product[2]
-            product_index = products.index(product)
-            products[product_index] = (
-                *product[:2],
-                present_count - quantity,
-                *product[3:]
-            )
-            if present_count - quantity <= product[3]:
-                place_order(product)
+def fetch_product_data(product_code):
+    conn = sqlite3.connect('product_database.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT product_name, price_per_piece FROM products WHERE product_code = ?
+    ''', (product_code,))
+    row = cursor.fetchone()
+    conn.close()
+    return row
 
-def place_order(product):
-    dealer_mode = product[5]
-    dealer_contact = product[6]
-    order_count = product[7]
+@app.route('/billing')
+def billing():
+    return render_template('billing.html')
 
-    if dealer_mode == "email":
-        send_email_order(dealer_contact, product[0], order_count)
-    elif dealer_mode == "sms":
-        send_sms_order(dealer_contact, product[0], order_count)
-
-def send_email_order(email, product_code, order_count):
-    subject = f"Order Request for Product {product_code}"
-    body = f"Please send {order_count} units of Product {product_code}."
+@app.route('/submit_bill', methods=['POST'])
+def submit_bill():
+    data = request.json.get('product_data')  # Retrieve JSON data from the request
     
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = "your_email@example.com"
-    msg['To'] = email
+    # Process and update the database based on the JSON data
+    conn = sqlite3.connect('product_database.db')
+    cursor = conn.cursor()
 
-    smtp_server = "smtp.example.com"
-    smtp_port = 587
-    smtp_username = "your_username"
-    smtp_password = "your_password"
+    for product in data:
+        product_code = product['product_code']
+        quantity = product['quantity']
 
-    server = smtplib.SMTP(smtp_server, smtp_port)
-    server.starttls()
-    server.login(smtp_username, smtp_password)
-    server.sendmail("your_email@example.com", [email], msg.as_string())
-    server.quit()
+        # Fetch the current present_stock for the product
+        cursor.execute('SELECT present_stock FROM products WHERE product_code = ?', (product_code,))
+        row = cursor.fetchone()
 
-def send_sms_order(phone_number, product_code, order_count):
-    account_sid = 'your_account_sid'
-    auth_token = 'your_auth_token'
-    client = Client(account_sid, auth_token)
+        if row is not None:
+            current_stock = row[0]
+            new_stock = current_stock - int(quantity)
+            cursor.execute('UPDATE products SET present_stock = ? WHERE product_code = ?', (new_stock, product_code))
 
-    message = client.messages.create(
-        to=phone_number,
-        from_='your_twilio_number',
-        body=f"Please send {order_count} units of Product {product_code}."
-    )
-    
-    
-# @app.route('/logout')
-# def logout():
-#     session.clear()
-#     return redirect('/')
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+    # Redirect to the "Thank You" page
+    return redirect(url_for('thank_you'))
+
+@app.route('/thank_you')
+def thank_you():
+    return render_template('thank_you.html')
+
+@app.route('/get_product_data', methods=['POST'])
+def get_product_data():
+    product_code = request.json.get('product_code')
+    product_data = fetch_product_data(product_code)
+    return jsonify({'product_name': product_data[0], 'price': product_data[1]})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
