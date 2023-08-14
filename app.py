@@ -102,6 +102,14 @@ def dashboard():
 def inventory():
     return render_template('inventory.html')
 
+@app.route('/get_inventory', methods=['GET'])
+def get_inventory():
+    conn = sqlite3.connect('product_database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT product_code, product_name, present_stock, minimum_stock FROM products')
+    inventory = cursor.fetchall()
+    conn.close()
+    return jsonify(inventory)
 
 @app.route('/dealers')
 def dealers():
