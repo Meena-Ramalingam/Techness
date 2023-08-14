@@ -103,6 +103,19 @@ def inventory():
     return render_template('inventory.html')
 
 
+@app.route('/dealers')
+def dealers():
+    return render_template('dealers.html')
+
+@app.route('/get_dealers', methods=['GET'])
+def get_dealers():
+    conn = sqlite3.connect('product_database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT dealer_name, dealer_email, product_code, product_name, dealer_order_count FROM products')
+    dealers = cursor.fetchall()
+    conn.close()
+    return jsonify(dealers)
+
 
 def fetch_product_data(product_code):
     conn = sqlite3.connect('product_database.db')

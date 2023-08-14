@@ -12,8 +12,9 @@
             <tr>
                 <th>Dealer Name</th>
                 <th>Dealer Email</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
                 <th>Order Count</th>
-                <th>Change Order Count</th>
             </tr>
         </thead>
         <tbody id="dealerBody">
@@ -34,26 +35,12 @@
                                     '<td>' + dealer[0] + '</td>' +
                                     '<td>' + dealer[1] + '</td>' +
                                     '<td>' + dealer[2] + '</td>' +
-                                    '<td><input type="number" class="order-count-input" min="0" value="0" data-email="' + dealer[1] + '"></td>' +
+                                    '<td>' + dealer[3] + '</td>' +
+                                    '<td>' + dealer[4] + '</td>' +
                                   '</tr>';
                         tableBody.append(row);
                     });
                 }
-            });
-
-            // Update order count
-            $('#dealerTable').on('change', '.order-count-input', function() {
-                var newOrderCount = $(this).val();
-                var dealerEmail = $(this).data('email');
-                $.ajax({
-                    type: 'POST',
-                    url: '/update_order_count',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ 'dealer_email': dealerEmail, 'new_order_count': newOrderCount }),
-                    success: function(response) {
-                        console.log(response.message);
-                    }
-                });
             });
         });
     </script>
