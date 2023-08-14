@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session, Response
+from flask import Flask, json,render_template, request, redirect, url_for, jsonify, session, Response
 import smtplib
 from email.mime.text import MIMEText
 from twilio.rest import Client
 import sqlite3
-import json
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
+# Email configuration
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USER = 'meenaramalingamspr@gmail.com'
+EMAIL_PASSWORD = 'harishankar826'
 
 
 @app.route('/')
@@ -103,6 +108,21 @@ def fetch_product_data(product_code):
     row = cursor.fetchone()
     conn.close()
     return row
+def send_email(subject, message, recipient):
+    try:
+        msg = MIMEText(message)
+        msg['Subject'] = subject
+        msg['From'] = EMAIL_USER
+        msg['To'] = recipient
+
+        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_USER, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_USER, recipient, msg.as_string())
+
+        print("Email sent successfully")
+    except Exception as e:
+        print("Error sending email:", str(e))
 
 @app.route('/billing')
 def billing():
@@ -121,14 +141,19 @@ def submit_bill():
         quantity = product['quantity']
 
         # Fetch the current present_stock for the product
-        cursor.execute('SELECT present_stock FROM products WHERE product_code = ?', (product_code,))
+        cursor.execute('SELECT minimum_stock,present_stock FROM products WHERE product_code = ?', (product_code,))
         row = cursor.fetchone()
 
         if row is not None:
-            current_stock = row[0]
+            current_stock, minimum_stock = row
             new_stock = current_stock - int(quantity)
             cursor.execute('UPDATE products SET present_stock = ? WHERE product_code = ?', (new_stock, product_code))
-
+        if new_stock <= minimum_stock: # type: ignore
+            dealer_email = 'dealer@example.com'  # Replace with the actual dealer's email
+            product_name = fetch_product_data(product_code)[0]
+            subject = f'Product Reorder: {product_name}'
+            message = f"Please place an order for {quantity} units of {product_name} within 2 days."
+            send_email(subject, message, dealer_email)
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
