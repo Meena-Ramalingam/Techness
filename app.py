@@ -98,6 +98,11 @@ def dashboard():
     return render_template('dashboard.html')
 
 
+@app.route('/inventory')
+def inventory():
+    return render_template('inventory.html')
+
+
 
 def fetch_product_data(product_code):
     conn = sqlite3.connect('product_database.db')
