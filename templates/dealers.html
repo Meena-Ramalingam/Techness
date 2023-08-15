@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dealer Information</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/static/css/Dash.css">
+</head>
+
+<body>
+    <div class="navbar">
+        
+        <a href="/dashboard">Dashboard</a>
+        <a href="/billing">Billing</a>
+    </div>
+    <h1>Dealer Information</h1>
+
+    <table id="dealerTable">
+        <thead>
+            <tr>
+                <th>Dealer Name</th>
+                <th>Dealer Email</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Order Count</th>
+            </tr>
+        </thead>
+        <tbody id="dealerBody">
+            <!-- Dealers' information will be fetched and displayed here -->
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            // Fetch and display dealer information
+            $.ajax({
+                type: 'GET',
+                url: '/get_dealers',
+                success: function(dealers) {
+                    var tableBody = $('#dealerBody');
+                    dealers.forEach(function(dealer) {
+                        var row = '<tr>' +
+                                    '<td>' + dealer[0] + '</td>' +
+                                    '<td>' + dealer[1] + '</td>' +
+                                    '<td>' + dealer[2] + '</td>' +
+                                    '<td>' + dealer[3] + '</td>' +
+                                    '<td>' + dealer[4] + '</td>' +
+                                  '</tr>';
+                        tableBody.append(row);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <style>
+    /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#inventoryTable {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#inventoryTable th,
+#inventoryTable td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#inventoryTable th {
+    background-color: #f2f2f2;
+}
+
+#inventoryTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#inventoryTable tr:hover {
+    background-color: #ddd;
+}
+.navbar {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+ </style>
+</head>
+<body>
+    <div class="navbar">
+        
+        <a href="/dashboard">Dashboard</a>
+        <a href="/billing">Billing</a>
+    </div>
+    <h1>Inventory</h1>
+
+    <table id="inventoryTable">
+        <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Present Stock</th>
+                <th>Minimum Stock</th>
+            </tr>
+        </thead>
+        <tbody id="inventoryBody">
+            <!-- Inventory data will be fetched and displayed here -->
+            <tr></tr>
+        </tbody>
+    </table>
+
+    <script >
+       
+$(document).ready(function() {
+    $.ajax({
+        type: 'GET',
+        url: '/get_inventory',
+        success: function(inventory) {
+            var tableBody = $('#inventoryBody');
+            inventory.forEach(function(item) {
+                var row = '<tr>' +
+                            '<td>' + item[0] + '</td>' +
+                            '<td>' + item[1] + '</td>' +
+                            '<td>' + item[2] + '</td>' +
+                            '<td>' + item[3] + '</td>' +
+                          '</tr>';
+                tableBody.append(row);
+            });
+        }
+    });
+});
+
+    </script>
+</body>
+</html>
