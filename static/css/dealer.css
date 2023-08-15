@@ -16,9 +16,9 @@ body {
 }
 
 .navbar a {
-    float: left;
+    float: right;
     display: block;
-    color: black;
+    color:white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
