@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Billing Page</title>
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/static/css/BillingS.css">
 </head>
@@ -85,12 +86,24 @@
     $('.product-row').each(function() {
         var productCode = $(this).find('.product-code-input').val();
         var quantity = parseInt($(this).find('.quantity-input').val());
+        var presentStock = parseInt($(this).find('.present-stock').text()); // Add a class to the element that shows present stock
+
+            if (quantity > presentStock) {
+                orderQuantityExceedsStock = true;
+                return false; // Stop iteration
+            }
         productData.push({ 'product_code': productCode, 'quantity': quantity });
+
     });
+
+    if (orderQuantityExceedsStock) {
+            alert("Order quantity exceeds available stock for one or more products.");
+            return; // Stop further processing
+        }
 
     $.ajax({
         type: 'POST',
-        url: '/submit_bill',
+        url: 'http://127.0.0.1:5000/submit_bill',
         contentType: 'application/json',  // Set the content type to JSON
         data: JSON.stringify({ 'product_data': productData }),  // Convert data to JSON format
         success: function(response) {

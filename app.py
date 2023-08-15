@@ -9,10 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Email configuration
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USER = 'meenaramalingamspr@gmail.com'
-EMAIL_PASSWORD = 'harishankar826'
+
 
 
 @app.route('/')
@@ -134,7 +131,14 @@ def fetch_product_data(product_code):
     row = cursor.fetchone()
     conn.close()
     return row
+
+import ssl
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USER = 'techness2023@gmail.com'
+EMAIL_PASSWORD = 'skkjjtiztkgksibe'
 def send_email(subject, message, recipient):
+    simple_email_context = ssl.create_default_context()
     try:
         msg = MIMEText(message)
         msg['Subject'] = subject
@@ -142,11 +146,17 @@ def send_email(subject, message, recipient):
         msg['To'] = recipient
 
         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
-            server.starttls()
+            server.starttls(context=simple_email_context)
             server.login(EMAIL_USER, EMAIL_PASSWORD)
+            print("Connected to server :-)")
+            print()
+            print(f"Sending email to - {recipient}")
             server.sendmail(EMAIL_USER, recipient, msg.as_string())
+            print("Email sent successfully")
+    
+    except smtplib.SMTPAuthenticationError as e:
+        print("Authentication error:", e)
 
-        print("Email sent successfully")
     except Exception as e:
         print("Error sending email:", str(e))
 
@@ -167,25 +177,29 @@ def submit_bill():
         quantity = product['quantity']
 
         # Fetch the current present_stock for the product
-        cursor.execute('SELECT minimum_stock,present_stock FROM products WHERE product_code = ?', (product_code,))
+        cursor.execute('SELECT minimum_stock,present_stock,dealer_order_count, dealer_email FROM products WHERE product_code = ?', (product_code,))
         row = cursor.fetchone()
 
         if row is not None:
-            current_stock, minimum_stock = row
-            new_stock = current_stock - int(quantity)
+            minimum_stock, present_stock, dealer_order_count, dealer_email = row
+            if quantity > present_stock:
+                conn.close()
+                return jsonify({'error': 'Order quantity exceeds available stock. '}), 400
+            new_stock = present_stock - int(quantity)
             cursor.execute('UPDATE products SET present_stock = ? WHERE product_code = ?', (new_stock, product_code))
-        if new_stock <= minimum_stock: # type: ignore
-            dealer_email = 'dealer@example.com'  # Replace with the actual dealer's email
+            print("updated 1 ", new_stock)
+        if new_stock <= minimum_stock:
+            # dealer_email = '211501051@rajalakshmi.edu.in'  # Replace with the actual dealer's email
             product_name = fetch_product_data(product_code)[0]
             subject = f'Product Reorder: {product_name}'
-            message = f"Please place an order for {quantity} units of {product_name} within 2 days."
+            message = f"Please place an order for {dealer_order_count} units of {product_name} within 2 days."
             send_email(subject, message, dealer_email)
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
 
     # Redirect to the "Thank You" page
-    return redirect(url_for('thank_you'))
+    return render_template('thank_you.html')
 
 @app.route('/thank_you')
 def thank_you():
@@ -195,7 +209,13 @@ def thank_you():
 def get_product_data():
     product_code = request.json.get('product_code')
     product_data = fetch_product_data(product_code)
+    if product_data is None:
+        return jsonify({'error': 'Product not found'})
     return jsonify({'product_name': product_data[0], 'price': product_data[1]})
+
+@app.route('/sales_prediction')
+def sales_prediction():
+    return render_template('sales_prediction.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
