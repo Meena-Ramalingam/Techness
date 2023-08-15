@@ -16,10 +16,10 @@ body {
 }
 
 .navbar a {
-    
-    display: inline-block;
-    color: black;
-    text-align: right;
+    float: right;
+    display: block;
+    color:white;
+    text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: medium;
