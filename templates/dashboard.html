@@ -7,7 +7,7 @@
     <title>Retailer Dashboard</title>
     <!-- <link rel="stylesheet" href="/static/css/style.css"> -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <link rel="stylesheet" href="/static/css/Dash.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -20,17 +20,25 @@
             <a href="/billing">Create Bills</a>
             <a href="profit.html">Today's sales</a>
             <a href="/dealers">Dealers list</a>
+            <a href="/login" class="logout-button">Logout</a>
         </nav>
     </header>
     <section class="home">
         <div class="home-content">
             <h3>Welcome to Techness</h3>
             <p>Your ultimate solution for tackling the challenges faced by retailers in managing stock inventory, placing orders, and enhancing customer satisfaction. We understand the struggles that come with inventory management, where stockouts and overstocking can cost you valuable sales and customers. That's why we've designed Techness to revolutionize your retail business and ensure seamless operations.</p>
-        <a href="#" class="btn">Explore</a>
+            <a href="#" class="btn">Explore</a>
         </div>
         <div class="home-img">
-                <img src="/static/images/19368 copy.jpg">
+            <img src="/static/images/19368 copy.jpg">
         </div>
     </section>
+    <script>
+        document.querySelector('.logout-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            // Logic to handle logout can be added here
+            window.location.href = '/login';
+        });
+    </script>
 </body>
 </html>
