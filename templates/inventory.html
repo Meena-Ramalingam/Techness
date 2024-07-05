@@ -4,86 +4,141 @@
     <title>Inventory Page</title>
     <link rel="icon" href="/static/images/logo.png" type="image/png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <style>
-    /* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-.wave{
-	position: fixed;
-	bottom: 0;
-    right: 0;
-	height: 100%;
-	z-index: -1;
-}
-
-h1 {
-    margin-left: 20px;
-    margin-top: 20px;
-    color: #38d39f;
-}
-
-#inventoryTable {
-    width: 50%;
-    margin-left: 20px;
-    border-collapse: collapse;
-    margin-top: 6%;
-    color: #38d39f;
-    background-color: white;
-    border: 2px solid #38d39f;
-}
-
-#inventoryTable th,
-#inventoryTable td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-#inventoryTable th {
-    background-color: #f2f2f2;
-}
-
-#inventoryTable tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-#inventoryTable tr:hover {
-    background-color: #ddd;
-}
-
-.navbar {
-        background-color: transparent;
-        overflow: hidden;
-    }
-
-    .navbar a {
-        float: right;
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-    .navbar a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-
- </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .wave {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            height: 100%;
+            z-index: -1;
+        }
+        h1 {
+            margin-left: 20px;
+            margin-top: 20px;
+            color: #38d39f;
+        }
+        #inventoryTable {
+            width: 50%;
+            margin-left: 20px;
+            border-collapse: collapse;
+            margin-top: 6%;
+            color: #38d39f;
+            background-color: white;
+            border: 2px solid #38d39f;
+        }
+        #inventoryTable th,
+        #inventoryTable td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        #inventoryTable th {
+            background-color: #f2f2f2;
+        }
+        #inventoryTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #inventoryTable tr:hover {
+            background-color: #ddd;
+        }
+        .navbar {
+            background-color: transparent;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        .form-box {
+            width: 48%;
+            padding: 20px;
+            border: 2px solid #38d39f;
+            background-color: white;
+            border-radius: 10px;
+        }
+        .form-box h2 {
+            color: #38d39f;
+            margin-bottom: 20px;
+        }
+        .form-box input[type="text"],
+        .form-box input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-box input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #38d39f;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-box input[type="submit"]:hover {
+            background-color: #32a885;
+        }
+    </style>
 </head>
 <body>
-    
     <img class="wave" src="/static/images/hey.png">
     <div class="navbar">
-        
         <a href="/dashboard">Dashboard</a>
         <a href="/billing">Billing</a>
     </div>
     <h1>Inventory</h1>
+
+    <div class="form-container">
+        <div class="form-box">
+            <h2>Add Product</h2>
+            <form id="addProductForm">
+                <label for="productCode">Product Code</label>
+                <input type="text" id="productCode" name="productCode" required>
+                
+                <label for="productName">Product Name</label>
+                <input type="text" id="productName" name="productName" required>
+                
+                <label for="presentStock">Present Stock</label>
+                <input type="number" id="presentStock" name="presentStock" required>
+                
+                <label for="minimumStock">Minimum Stock</label>
+                <input type="number" id="minimumStock" name="minimumStock" required>
+                
+                <label for="dealerName">Dealer Name</label>
+                <input type="text" id="dealerName" name="dealerName" required>
+                
+                <input type="submit" value="Add Product">
+            </form>
+        </div>
+        <div class="form-box">
+            <h2>Delete Product</h2>
+            <form id="deleteProductForm">
+                <label for="deleteProductCode">Product Code</label>
+                <input type="text" id="deleteProductCode" name="deleteProductCode" required>
+                <input type="submit" value="Delete Product">
+            </form>
+        </div>
+    </div>
 
     <table id="inventoryTable">
         <thead>
@@ -96,31 +151,67 @@ h1 {
         </thead>
         <tbody id="inventoryBody">
             <!-- Inventory data will be fetched and displayed here -->
-            <tr></tr>
         </tbody>
     </table>
 
-    <script >
-       
-$(document).ready(function() {
-    $.ajax({
-        type: 'GET',
-        url: '/get_inventory',
-        success: function(inventory) {
-            var tableBody = $('#inventoryBody');
-            inventory.forEach(function(item) {
-                var row = '<tr>' +
-                            '<td>' + item[0] + '</td>' +
-                            '<td>' + item[1] + '</td>' +
-                            '<td>' + item[2] + '</td>' +
-                            '<td>' + item[3] + '</td>' +
-                          '</tr>';
-                tableBody.append(row);
+    <script>
+        $(document).ready(function() {
+            // Fetch inventory data
+            $.ajax({
+                type: 'GET',
+                url: '/get_inventory',
+                success: function(inventory) {
+                    var tableBody = $('#inventoryBody');
+                    inventory.forEach(function(item) {
+                        var row = '<tr>' +
+                                    '<td>' + item[0] + '</td>' +
+                                    '<td>' + item[1] + '</td>' +
+                                    '<td>' + item[2] + '</td>' +
+                                    '<td>' + item[3] + '</td>' +
+                                  '</tr>';
+                        tableBody.append(row);
+                    });
+                }
             });
-        }
-    });
-});
 
+            // Add product form submission
+            $('#addProductForm').submit(function(event) {
+                event.preventDefault();
+                var formData = {
+                    productCode: $('#productCode').val(),
+                    productName: $('#productName').val(),
+                    presentStock: $('#presentStock').val(),
+                    minimumStock: $('#minimumStock').val(),
+                    dealerName: $('#dealerName').val()
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/add_product',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert('Product added successfully');
+                        location.reload();
+                    }
+                });
+            });
+
+            // Delete product form submission
+            $('#deleteProductForm').submit(function(event) {
+                event.preventDefault();
+                var productCode = $('#deleteProductCode').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/delete_product',
+                    data: JSON.stringify({ productCode: productCode }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert('Product deleted successfully');
+                        location.reload();
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
